@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { connect, sendMsg } from "./api";
 import ChatInput from "./Components/ChatInput";
 import ChatHistory from "./Components/ChatHistory";
@@ -25,11 +23,14 @@ function App() {
   });
 
   return (
-    <div className="App">
-      <ChatHistory chatHistory={chatHistory} />
-      <ChatInput send={send} />
-      {/* <button onClick={() => send()}> Send </button> */}
-    </div>
+    <>
+      <h1 className="text-3xl font-bold underline">Chat App-a your face</h1>
+      <div className="">
+        <ChatHistory chatHistory={chatHistory} />
+        <ChatInput send={send} />
+        {/* <button onClick={() => send()}> Send </button> */}
+      </div>
+    </>
   );
 }
 
