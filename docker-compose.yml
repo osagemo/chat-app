@@ -1,12 +1,12 @@
 version: "3.7"
 
 services:
-  # Backend API
+  # AUTH API
   server:
     container_name: auth_api
     build:
-      context: .
-      dockerfile: ./docker/server/Dockerfile
+      context: ./auth-server/
+      dockerfile: ./docker/Dockerfile
     working_dir: /usr/src/server
     ports:
       - "3000:3000"
@@ -16,11 +16,26 @@ services:
     restart: always
     # Using volumes overrides dockerignore..
     volumes:
-      - ./:/usr/src/server
+      - ./auth-server/:/usr/src/server
       - /usr/src/server/node_modules
     environment:
-      DB_URI: ${DB_URI}
+      DB_URI: ${DKR_DB_URI}
+      JWT_SECRET: ${JWT_SECRET}
 
+  # ws-server
+  ws-server:
+    container_name: ws_server
+    build:
+      context: ./chat-socket-server
+      dockerfile: ./docker/Dockerfile
+    working_dir: /usr/src/ws-server
+    ports:
+      - "8080:8080"
+    #restart: always
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+
+  # DB
   postgres:
     container_name: auth_db
     build:
