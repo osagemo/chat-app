@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { connect, sendMsg } from "./api";
+import ChatInput from "./Components/ChatInput";
+import ChatHistory from "./Components/ChatHistory";
+import { MessageModel } from "./Components/Message";
 
 function App() {
+  const [chatHistory, setChatHistory] = useState<MessageModel[]>([]);
+
+  const send = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      sendMsg(e.currentTarget.value);
+      e.currentTarget.value = "";
+    }
+  };
+
+  useEffect(() => {
+    connect((msg) => {
+      console.log("New Message");
+      const { body } = JSON.parse(msg.data);
+      setChatHistory((prev) => [...prev, { body }]);
+    });
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ChatHistory chatHistory={chatHistory} />
+      <ChatInput send={send} />
+      {/* <button onClick={() => send()}> Send </button> */}
     </div>
   );
 }
