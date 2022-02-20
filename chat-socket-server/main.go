@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/osagemo/chat-app/pkg/websocket"
 )
 
@@ -18,6 +19,8 @@ func wsHandler(pool *websocket.Pool, rw http.ResponseWriter, r *http.Request) {
 	client := &websocket.Client{
 		Conn: conn,
 		Pool: pool,
+		ID:   uuid.New().String(),
+		User: websocket.User{Name: "Morgan", Id: 1},
 	}
 
 	pool.Register <- client

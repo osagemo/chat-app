@@ -7,8 +7,9 @@ import { MessageModel } from "./Components/Message";
 function App() {
   const [chatHistory, setChatHistory] = useState<MessageModel[]>([]);
 
-  const send = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const send = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       sendMsg(e.currentTarget.value);
       e.currentTarget.value = "";
     }
@@ -17,20 +18,20 @@ function App() {
   useEffect(() => {
     connect((msg) => {
       console.log("New Message");
-      const { body } = JSON.parse(msg.data);
-      setChatHistory((prev) => [...prev, { body }]);
+      const { body, user } = JSON.parse(msg.data);
+      setChatHistory((prev) => [...prev, { body, userName: user.name }]);
     });
   });
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Chat App-a your face</h1>
-      <div className="">
-        <ChatHistory chatHistory={chatHistory} />
+    <div className="w-screen h-screen flex flex-col bg-gray-100 items-center py-5 box-border">
+      <h1 className="text-3xl font-bold underline">Chat App-a you face</h1>
+      <ChatHistory chatHistory={chatHistory} />
+      {/* <button onClick={() => send()}> Send </button> */}
+      <div className="mt-auto w-3/6">
         <ChatInput send={send} />
-        {/* <button onClick={() => send()}> Send </button> */}
       </div>
-    </>
+    </div>
   );
 }
 

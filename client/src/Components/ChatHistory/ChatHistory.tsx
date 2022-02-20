@@ -6,7 +6,7 @@ type ChatHistoryProps = {
 
 const ChatHistory = ({ chatHistory }: ChatHistoryProps) => {
   return (
-    <div>
+    <div className="w-1/2 overflow-y-auto py-2">
       {chatHistory.map((msg, i) => (
         <Message key={i} message={msg} />
       ))}

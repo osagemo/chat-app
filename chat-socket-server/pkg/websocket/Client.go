@@ -11,11 +11,19 @@ type Client struct {
 	ID   string // connection identifier
 	Conn *websocket.Conn
 	Pool *Pool // the pool this client is a part of?
+	User User
+}
+
+type User struct {
+	Name string `json:"name"`
+	Id   int    `json:"id"`
 }
 
 type Message struct {
-	Type int    `json:"type"`
-	Body string `json:"body"`
+	OpCode int
+	Type   string `json:"type"`
+	Body   string `json:"body"`
+	User   User   `json:"user"`
 }
 
 func (c *Client) Read() {
@@ -34,7 +42,7 @@ func (c *Client) Read() {
 			return
 		}
 
-		message := Message{Type: messageType, Body: string(p)}
+		message := Message{OpCode: messageType, Type: "chat-message", Body: string(p), User: c.User}
 		c.Pool.BroadCast <- message
 		fmt.Printf("Message Recieved And passed to channel %+v\n", message)
 	}

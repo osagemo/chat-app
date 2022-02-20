@@ -1,12 +1,14 @@
 type ChatInputProps = {
-  send: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  send: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 };
 
 const ChatInput = ({ send }: ChatInputProps) => {
   return (
-    <div className="">
-      <input onKeyDown={(e) => send(e)} placeholder="press enter to send" />
-    </div>
+    <textarea
+      className="w-full h-20 p-2 resize-none"
+      onKeyDown={(e) => send(e)}
+      placeholder="Press enter to send"
+    />
   );
 };
 

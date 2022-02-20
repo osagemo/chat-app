@@ -5,7 +5,12 @@ type MessageProps = {
 };
 
 const Message = ({ message }: MessageProps) => {
-  return <div className="">{message.body}</div>;
+  return (
+    <div className="">
+      <b>{message.userName}: </b>
+      {message.body}
+    </div>
+  );
 };
 
 export default Message;

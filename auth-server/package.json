@@ -28,6 +28,5 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "prettier": "^2.5.1"
   }
 }
