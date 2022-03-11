@@ -21,7 +21,7 @@ func NewPool() *Pool {
 // The only place where we write to WebSocket connections.
 // Using select to wait for multiple channel operations to avoid issues with concurrent writing
 func (pool *Pool) Start() {
-	for {
+	for { // this is not a good solution man
 		{ // scope to avoid SA4011
 			select {
 			case client := <-pool.Register:
