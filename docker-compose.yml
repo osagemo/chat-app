@@ -31,9 +31,13 @@ services:
     working_dir: /usr/src/ws-server
     ports:
       - "8080:8080"
+    depends_on:
+      - "redis"
     #restart: always
     environment:
       JWT_SECRET: ${JWT_SECRET}
+      REDIS_DB: ${DKR_RD_DB}
+      REDIS_PASSWORD: "${DKR_RD_PASSWORD}"
 
   # DB
   postgres:
@@ -44,8 +48,17 @@ services:
     ports:
       - "5432:5432"
     restart: always
-    #Extract to file
     environment:
       POSTGRES_DB: ${DKR_PG_DB}
       POSTGRES_USER: "${DKR_PG_USER}"
       POSTGRES_PASSWORD: "${DKR_PG_PASSWORD}"
+  # Redis
+  redis:
+    image: redis:7.0.4
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --loglevel warning
+    environment:
+      REDIS_DB: ${DKR_RD_DB}
+      REDIS_PASSWORD: "${DKR_RD_PASSWORD}"
