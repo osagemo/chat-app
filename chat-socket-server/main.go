@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
+	"github.com/osagemo/chat-app/pkg/db"
 	"github.com/osagemo/chat-app/pkg/websocket"
 )
 
@@ -27,9 +29,14 @@ func wsHandler(pool *websocket.Pool, rw http.ResponseWriter, r *http.Request) {
 	client.Read()
 }
 
-func initRoutes() {
+func initRoutes(db *db.CacheDatabase) {
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(rw, "HTTP Server")
+		result, dbErr := db.Get("test")
+		if dbErr != nil {
+			log.Fatalf("blabla")
+		}
+		fmt.Println(result)
 	})
 
 	// init pool
@@ -43,7 +50,12 @@ func initRoutes() {
 // maintain a list of connections like map[*net.Conn]something, add when opened, remove when closed
 // iterate through and send the same message to all connections
 func main() {
-	initRoutes()
+	database, err := db.NewCacheDatabase()
+	if err != nil {
+		log.Fatalf("Failed to connect to redis: %s", err.Error())
+	}
+
+	initRoutes(database)
 	fmt.Println("Socket server v0, listening on port 8080")
 	http.ListenAndServe(":8080", nil)
 }
