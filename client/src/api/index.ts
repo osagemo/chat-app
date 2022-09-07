@@ -1,5 +1,4 @@
-const socket = new WebSocket("ws://100.124.86.111:8080/socket");
-
+const socket = new WebSocket("ws://100.66.142.181:8080/socket");
 const connect = (onMsgCallback: (msg: MessageEvent) => void) => {
   console.log("Attempting Connection...");
 

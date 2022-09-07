@@ -1,2 +1,4 @@
 debug.log
 .vscode/*
+.env
+.dev.env
