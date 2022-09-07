@@ -12,6 +12,7 @@ services:
       - "3000:3000"
     depends_on:
       - "postgres"
+      - "redis"
     command: npm start
     restart: always
     # Using volumes overrides dockerignore..
@@ -55,10 +56,12 @@ services:
   # Redis
   redis:
     image: redis:7.0.4
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
     restart: always
     ports:
-      - '6379:6379'
-    command: redis-server --loglevel warning
+      - "6379:6379"
+    command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       REDIS_DB: ${DKR_RD_DB}
       REDIS_PASSWORD: "${DKR_RD_PASSWORD}"
