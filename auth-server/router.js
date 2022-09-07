@@ -10,6 +10,7 @@ module.exports = function (app) {
     res.send("Hello there");
   });
   app.post("/signup", Authentication.signup);
+  app.get("/wsticket", requireAuth, Authentication.wsticket);
   app.post("/signin", requireSignin, Authentication.signin);
   app.post("/signout", requireAuth, Authentication.signout);
   app.all("*", (req, res, next) => {

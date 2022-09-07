@@ -33,7 +33,10 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
-  if (process.env.NODE_ENV === "development") {
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "local"
+  ) {
     logger.error(`Error type: ${err.name}`);
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === "production") {

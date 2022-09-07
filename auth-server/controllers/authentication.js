@@ -1,5 +1,6 @@
 const logger = require("../logger")(module);
 const bcrypt = require("bcrypt");
+const redis = require("../database/redis");
 const userRepository = require("../repositories/userRepository");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("./../utils/appError");
@@ -39,4 +40,18 @@ exports.signout = catchAsync(async (req, res, next) => {
     `User ${updatedUser.id} signed out, last_logout: ${updatedUser.last_logout_at}`
   );
   res.json({ sucess: true });
+});
+
+exports.wsticket = catchAsync(async (req, res, next) => {
+  const ticketData = {
+    ip: req.socket.remoteAddress,
+    issuedAt: new Date().toISOString(),
+    issuedFor: req.user.email,
+  };
+
+  logger.info(`ticket issued for user ${req.user.email}`);
+  const ticket = crypto.randomUUID();
+
+  await redis.set(ticket, JSON.stringify(ticketData));
+  res.json({ ticket });
 });

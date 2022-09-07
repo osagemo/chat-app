@@ -16,12 +16,15 @@ services:
     command: npm start
     restart: always
     # Using volumes overrides dockerignore..
-    volumes:
-      - ./auth-server/:/usr/src/server
-      - /usr/src/server/node_modules
     environment:
       DB_URI: ${DKR_DB_URI}
       JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: ${DKR_ENV}
+      REDIS_ADDRESS: ${DKR_RD_ADDRESS}
+      REDIS_DB: ${DKR_RD_DB}
+      REDIS_PASSWORD: "${DKR_RD_PASSWORD}"
+      SERVER_IP: server
+      SERVER_PORT: 3000
 
   # ws-server
   ws-server:

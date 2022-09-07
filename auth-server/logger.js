@@ -18,7 +18,10 @@ const getLabel = function (callingModule) {
 // - Write all logs error (and above) to `svamp-error.log`.
 //
 let transportOutputs = [];
-if (process.env.NODE_ENV === "development") {
+if (
+  process.env.NODE_ENV === "development" ||
+  process.env.NODE_ENV === "local"
+) {
   transportOutputs.push(new transports.Console());
 } else if (process.env.NODE_ENV === "production") {
   transportOutputs.push(

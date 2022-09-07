@@ -1,4 +1,5 @@
 const dotenv = require("dotenv");
+global.crypto = require("crypto");
 
 process.on("uncaughtException", (err) => {
   logger.error("Uncaught Exception, shutting down process");
@@ -10,6 +11,8 @@ dotenv.config();
 const logger = require("./logger")(module);
 const app = require("./createExpressApp")();
 require("./database/db")(); // initializes knex
+require("./database/redis");
+
 const server = app.listen(process.env.SERVER_PORT, function () {
   logger.info(
     `Server started in ${process.env.NODE_ENV} mode, listening on ${process.env.SERVER_IP}:${process.env.SERVER_PORT}`
