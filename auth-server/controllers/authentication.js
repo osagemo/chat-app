@@ -43,8 +43,11 @@ exports.signout = catchAsync(async (req, res, next) => {
 });
 
 exports.wsticket = catchAsync(async (req, res, next) => {
+  let ip = req.socket.remoteAddress.startsWith("::ffff")
+    ? req.socket.remoteAddress.slice(7)
+    : req.socket.remoteAddress;
   const ticketData = {
-    ip: req.socket.remoteAddress,
+    ip,
     issuedAt: new Date().toISOString(),
     issuedFor: req.user.email,
   };
